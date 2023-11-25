@@ -26,13 +26,13 @@ const createNewProject = async (req, res) => {
     } = req.body;
 
     if ( !users || !title || !status || !sections) {
-        return res.status(400).json({ message: 'Fill Required Inputs' });
+        return res.status(400).json({ message: 'Fill Required Inputs!' });
     }
     
     const duplicate = await Project.findOne({ title }).lean().exec();
 
     if (duplicate) {
-        return res.status(409).json({ message: 'Project Title Exists' });
+        return res.status(409).json({ message: 'Project Title Exists!' });
     }
 
     const project = await Project.create({ tag, users, title, status, sections, fields });

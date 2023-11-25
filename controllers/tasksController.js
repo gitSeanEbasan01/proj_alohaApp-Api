@@ -31,7 +31,7 @@ const createNewTask = async (req, res) => {
     
     
     if (!usersAssigned || !title || !description) {
-        return res.status(400).json({ message: 'Fill required fields' });
+        return res.status(400).json({ message: 'Fill Required Inputs!' });
     }
     
     // const duplicate = await Task.findOne({ title }).collation({ locale: 'en', strngth: 2 }).lean().exec();
@@ -39,7 +39,7 @@ const createNewTask = async (req, res) => {
     
     if (duplicate && duplicate.project === project) {
         // 409 - Conflict Error
-        return res.status(409).json({ message: 'Task title already exist' });
+        return res.status(409).json({ message: 'Task Title Already Exist!' });
     }
     
     
@@ -69,8 +69,9 @@ const updateTask = async (req, res) => {
         description,
         fields
     } = req.body;
+    console.log(isChecked);
 
-    if (!id || typeof(isChecked) !== 'boolean' || !project || !section || !usersAssigned || !title || !description || !fields) {
+    if (!id || typeof(isChecked) !== 'boolean' || !project || !usersAssigned || !title) {
         if (!id) {
             console.log(`No id`)
         }
@@ -80,20 +81,11 @@ const updateTask = async (req, res) => {
         if (!project) {
             console.log(`No project`)
         }
-        if (!section) {
-            console.log(`No section`)
-        }
         if (!usersAssigned) {
             console.log(`No usersAssigned`)
         }
         if (!title) {
             console.log(`No title`)
-        }
-        if (!description) {
-            console.log(`No description`)
-        }
-        if (!fields) {
-            console.log(`No fields`)
         }
         return res.status(400).json({ message: 'All Fields Required' });
     }
@@ -104,11 +96,25 @@ const updateTask = async (req, res) => {
         return res.status(400).json({ message: 'Task Not Found' });
     }
 
-    task.isChecked = isChecked;
-    task.title = title;
-    task.section = section;
-    task.usersAssigned = usersAssigned;
-    task.fields = fields;
+    if (typeof(isChecked) === 'boolean') {
+        // console.log(isChecked);
+        task.isChecked = isChecked;
+    }
+    if (title) {
+        task.title = title;
+    }
+    if (description) {
+        task.description = description;
+    }
+    if (section) {
+        task.section = section;
+    }
+    if (usersAssigned) {
+        task.usersAssigned = usersAssigned;
+    }
+    if (fields) {
+        task.fields = fields;
+    }
 
     const updateTask = await task.save();
 

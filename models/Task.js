@@ -7,7 +7,7 @@ const taskSchema = new mongoose.Schema(
     {
         isChecked: {
             type: Boolean,
-            required: false,
+            required: true,
         },
         usersAssigned: {
             type: [String],
